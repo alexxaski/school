@@ -6,10 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class SchoolApplication {
 
+
 	public static void main(String[] args) {
 		SpringApplication.run(SchoolApplication.class, args);
-		System.out.println("привет");
 	}
+      System.out.println("привет");
 
 }
-
