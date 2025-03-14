@@ -10,7 +10,7 @@ public class SchoolApplication {
 		SpringApplication.run(SchoolApplication.class, args);
 	}
 
-      System.out.println("привет
+
 
 }
 
