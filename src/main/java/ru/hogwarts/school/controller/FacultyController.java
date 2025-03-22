@@ -43,4 +43,8 @@ public class FacultyController {
     public List<Faculty> getFacultyies() {
         return facultyService.getAllFaculties();
     }
+    @GetMapping("/faculties/search")
+    public List<Faculty> getFacultiesByNameOrColor(@RequestParam String query) {
+        return facultyService.findByNameOrColor(query);
+    }
 }

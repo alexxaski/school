@@ -43,5 +43,7 @@ public class StudentService {
     public List<Student> getAllStudents() {
         return Collections.unmodifiableList(studentRepository.findAll());
     }
+    public List<Student> findByAgeBetween(int min, int max) {
+        return studentRepository.findByAgeBetween(min, max);
+    }
 }
-

@@ -42,4 +42,8 @@ public class StudentController {
     public List<Student> getStudents() {
         return studentService.getAllStudents();
     }
+    @GetMapping("/students/age")
+    public List<Student> getStudentsByAgeRange(@RequestParam int min, @RequestParam int max) {
+        return studentService.findByAgeBetween(min, max);
+    }
 }
