@@ -1,16 +1,15 @@
-package ru.hogwarts.school.controller;
+package ru.hogwarts.school.test.controller;
 
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.hogwarts.school.model.Avatar;
-import ru.hogwarts.school.model.Student;
-import ru.hogwarts.school.service.StudentService;
+import ru.hogwarts.school.test.model.Avatar;
+import ru.hogwarts.school.test.model.Student;
+import ru.hogwarts.school.test.service.StudentService;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,8 +31,9 @@ public class StudentController {
     }
 
     @PostMapping("/create")
-    public void create(@RequestParam("/name") String name, @RequestParam("/age") int age) {
-        studentService.create(new Student(name, age));
+    public Student create(@RequestBody Student student) {
+        studentService.create(student);
+        return student;
     }
 
     @GetMapping("/{id}")
@@ -56,7 +56,7 @@ public class StudentController {
         return studentService.getAllStudents();
     }
 
-    @GetMapping("/students/age")
+    @GetMapping("/age")
     public List<Student> getStudentsByAgeRange(@RequestParam int min, @RequestParam int max) {
         return studentService.findByAgeBetween(min, max);
     }

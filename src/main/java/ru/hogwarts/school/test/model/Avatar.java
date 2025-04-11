@@ -1,4 +1,4 @@
-package ru.hogwarts.school.model;
+package ru.hogwarts.school.test.model;
 
 import jakarta.persistence.*;
 

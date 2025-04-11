@@ -1,11 +1,10 @@
-package ru.hogwarts.school.service;
+package ru.hogwarts.school.test.service;
 
 import org.springframework.stereotype.Service;
-import ru.hogwarts.school.model.Faculty;
-import ru.hogwarts.school.repository.FacultyRepository;
+import ru.hogwarts.school.test.model.Faculty;
+import ru.hogwarts.school.test.repository.FacultyRepository;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class FacultyService {

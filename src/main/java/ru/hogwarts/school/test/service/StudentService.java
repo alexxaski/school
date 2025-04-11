@@ -1,15 +1,13 @@
-package ru.hogwarts.school.service;
+package ru.hogwarts.school.test.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import ru.hogwarts.school.model.Avatar;
-import ru.hogwarts.school.model.Faculty;
-import ru.hogwarts.school.model.Student;
-import ru.hogwarts.school.repository.AvatarRepository;
-import ru.hogwarts.school.repository.FacultyRepository;
-import ru.hogwarts.school.repository.StudentRepository;
+import ru.hogwarts.school.test.model.Avatar;
+import ru.hogwarts.school.test.model.Student;
+import ru.hogwarts.school.test.repository.AvatarRepository;
+import ru.hogwarts.school.test.repository.StudentRepository;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -21,9 +19,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
 @Service
 public class StudentService {
@@ -36,11 +31,12 @@ public class StudentService {
         this.avatarRepository = avatarRepository;
     }
 
-    public void create(Student student) {
+    public Student create(Student student) {
         if (student == null || student.getId() != null) {
             throw new IllegalArgumentException("студент уже имеет ID или является пустым");
         }
         studentRepository.save(student);
+        return student;
     }
 
 

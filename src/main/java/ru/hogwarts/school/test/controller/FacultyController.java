@@ -1,9 +1,9 @@
-package ru.hogwarts.school.controller;
+package ru.hogwarts.school.test.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.hogwarts.school.model.Faculty;
-import ru.hogwarts.school.service.FacultyService;
+import ru.hogwarts.school.test.model.Faculty;
+import ru.hogwarts.school.test.service.FacultyService;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +20,7 @@ public class FacultyController {
     }
 
     @PostMapping("/create")
-    public void create(@RequestParam("/name") String name,@RequestParam("/color") String color) {
+    public void create(@RequestParam("name") String name,@RequestParam("/color") String color) {
         facultyService.create(new Faculty(name, color));
     }
 
