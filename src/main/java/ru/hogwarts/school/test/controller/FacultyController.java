@@ -20,8 +20,9 @@ public class FacultyController {
     }
 
     @PostMapping("/create")
-    public void create(@RequestParam("name") String name,@RequestParam("/color") String color) {
-        facultyService.create(new Faculty(name, color));
+    public Faculty create(@RequestBody Faculty faculty) {
+        facultyService.create(faculty);
+        return faculty;
     }
 
     @GetMapping("/{id}")
