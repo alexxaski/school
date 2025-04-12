@@ -1,13 +1,17 @@
 package ru.hogwarts.school.test.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 
 @Entity
 public class Student {
 
+
+    @JsonProperty("id")
+
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
     private int age;

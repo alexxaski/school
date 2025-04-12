@@ -73,6 +73,11 @@ public class StudentController {
         studentService.uploadAvatar(id, avatar);
         return ResponseEntity.ok().build();
     }
+    @PostMapping("/add")
+    public ResponseEntity<Student> addStudent(@RequestBody Student student) {
+        Student savedStudent = studentService.save(student);
+        return ResponseEntity.ok(savedStudent);
+    }
 
     @GetMapping(value = "/{id}/avatar/preview")
     public ResponseEntity<byte[]> downloadAvatarPreview(@PathVariable Long id) {

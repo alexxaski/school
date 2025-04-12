@@ -38,7 +38,10 @@ public class StudentService {
         studentRepository.save(student);
         return student;
     }
-
+    public Student save(Student student) {
+        Student savedStudent = studentRepository.save(student);
+        return savedStudent;
+    }
 
     public Optional<Student> read(Long id) {
         return studentRepository.findById(id);
