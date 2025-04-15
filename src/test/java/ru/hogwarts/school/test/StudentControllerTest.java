@@ -70,7 +70,7 @@ public class StudentControllerTest {
 
         updatedStudent.setName("Alex");
 
-        ResponseEntity response = restTemplate.exchange("/http://localhost:" + port + "/student/",
+        ResponseEntity response = restTemplate.exchange("http://localhost:" + port + "/student/",
                 HttpMethod.PUT, new HttpEntity<>(updatedStudent), String.class);
         assertThat(response.toString().contains("Alex"));
     }
@@ -80,7 +80,7 @@ public class StudentControllerTest {
         Student student = new Student("Jane Doe", 21);
         studentController.create(student);
 
-        ResponseEntity response = restTemplate.exchange("/http://localhost:" + port + "/student/delete/" + student.getId(),
+        ResponseEntity response = restTemplate.exchange("http://localhost:" + port + "/student/delete/" + student.getId(),
                 HttpMethod.DELETE, new HttpEntity<>(student.getId()), Void.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }

@@ -6,10 +6,9 @@ import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -39,18 +38,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class StudentControllerMVC_Test {
     @Autowired
     private MockMvc mockMvc;
-
-    @MockitoBean
+    @MockBean
     private StudentRepository studentRepository;
-
-    @MockitoBean
-    private FacultyRepository facultyRepository;
-
-    @MockitoBean
+    @MockBean
     private AvatarRepository avatarRepository;
-
-    @MockitoBean
+    @SpyBean
     private StudentService studentService;
+    @InjectMocks
+    private StudentController studentController;
 
     @Test
     void createStudentTest() throws Exception {
@@ -82,15 +77,15 @@ public class StudentControllerMVC_Test {
         Student student = new Student(name, age);
         student.setId(id);
 
-        when(studentRepository.findById(id)).thenReturn(Optional.of(student));
+        when(studentRepository.findById(anyLong())).thenReturn(Optional.of(student));
 
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/student/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").doesNotExist())
-                .andExpect(jsonPath("$.name").doesNotExist())
-                .andExpect(jsonPath("$.age").doesNotExist());
+                .andExpect(jsonPath("$.id").value(student.getId()))
+                .andExpect(jsonPath("$.age").value(student.getAge()))
+                .andExpect(jsonPath("$.name").value(student.getName()));
     }
     @Test
     void updateStudentTest() throws Exception {
@@ -100,7 +95,7 @@ public class StudentControllerMVC_Test {
 
         Student updatedStudent = new Student(updatedName, updatedAge);
         updatedStudent.setId(id);
-
+        when(studentRepository.existsById(anyLong())).thenReturn(true);
         when(studentRepository.save(updatedStudent)).thenReturn(updatedStudent);
 
         JSONObject studentJson = new JSONObject();
@@ -113,10 +108,8 @@ public class StudentControllerMVC_Test {
                         .content(studentJson.toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").doesNotExist())
-                .andExpect(jsonPath("$.name").doesNotExist())
-                .andExpect(jsonPath("$.age").doesNotExist());
+                .andExpect(status().isOk());
+
     }
 
       @Test
@@ -151,10 +144,10 @@ public class StudentControllerMVC_Test {
                         .get("/student/getAll")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].name").doesNotExist())
-                .andExpect(jsonPath("$[0].age").doesNotExist())
-                .andExpect(jsonPath("$[1].name").doesNotExist())
-                .andExpect(jsonPath("$[1].age").doesNotExist());
+                .andExpect(jsonPath("$[0].name").value(students.get(0).getName()))
+                .andExpect(jsonPath("$[0].age").value(students.get(0).getAge()))
+                .andExpect(jsonPath("$[1].name").value(students.get(1).getName()))
+                .andExpect(jsonPath("$[1].age").value(students.get(1).getAge()));
     }
     @Test
     void getStudentsByAgeRangeTest() throws Exception {
@@ -180,9 +173,9 @@ public class StudentControllerMVC_Test {
                         .get("/student/age?min={min}&max={max}", minAge, maxAge)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].name").doesNotExist())
-                .andExpect(jsonPath("$[0].age").doesNotExist())
-                .andExpect(jsonPath("$[1].name").doesNotExist())
-                .andExpect(jsonPath("$[1].age").doesNotExist());
+                .andExpect(jsonPath("$[0].name").value(students.get(0).getName()))
+                .andExpect(jsonPath("$[0].age").value(students.get(0).getAge()))
+                .andExpect(jsonPath("$[1].name").value(students.get(1).getName()))
+                .andExpect(jsonPath("$[1].age").value(students.get(1).getAge()));
     }
 }

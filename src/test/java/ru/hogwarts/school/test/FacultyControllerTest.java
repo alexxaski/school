@@ -72,7 +72,7 @@ public class FacultyControllerTest {
 
         Faculty updatedFaculty = new Faculty(originalFaculty.getColor(),"BLUE" );
 
-        ResponseEntity response = restTemplate.exchange("/http://localhost:" + port + "/faculty/",
+        ResponseEntity response = restTemplate.exchange("http://localhost:" + port + "/faculty/",
                 HttpMethod.PUT, new HttpEntity<>(updatedFaculty), String.class);
         assertThat(response.toString().contains("BLUE"));
     }
@@ -82,7 +82,7 @@ public class FacultyControllerTest {
         Faculty faculty = new Faculty("Jane Doe", "RED");
         facultyRepository.save(faculty);
 
-        ResponseEntity response = restTemplate.exchange("/http://localhost:" + port + "/faculty/delete/" + faculty.getId(),
+        ResponseEntity response = restTemplate.exchange("http://localhost:" + port + "/faculty/delete/" + faculty.getId(),
                 HttpMethod.DELETE, new HttpEntity<>(faculty.getId()), Void.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }

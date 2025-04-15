@@ -38,8 +38,8 @@ public class StudentController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Student> read(@PathVariable Long id) {
-        return studentService.read(id);
+    public Student read(@PathVariable Long id) {
+        return studentService.read(id).orElse(null);
     }
 
     @PutMapping("/update")
