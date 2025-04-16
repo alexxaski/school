@@ -25,6 +25,7 @@ public class StudentController {
 
     private final StudentService studentService;
 
+
     @Autowired
     public StudentController(StudentService studentService) {
         this.studentService = studentService;
@@ -37,8 +38,8 @@ public class StudentController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Student> read(@PathVariable Long id) {
-        return studentService.read(id);
+    public Student read(@PathVariable Long id) {
+        return studentService.read(id).orElse(null);
     }
 
     @PutMapping("/update")
@@ -71,6 +72,11 @@ public class StudentController {
 
         studentService.uploadAvatar(id, avatar);
         return ResponseEntity.ok().build();
+    }
+    @PostMapping("/add")
+    public ResponseEntity<Student> addStudent(@RequestBody Student student) {
+        Student savedStudent = studentService.save(student);
+        return ResponseEntity.ok(savedStudent);
     }
 
     @GetMapping(value = "/{id}/avatar/preview")
