@@ -84,7 +84,7 @@ public class FacultyControllerTest {
 
         ResponseEntity response = restTemplate.exchange("http://localhost:" + port + "/faculty/delete/" + faculty.getId(),
                 HttpMethod.DELETE, new HttpEntity<>(faculty.getId()), Void.class);
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
     @Test
