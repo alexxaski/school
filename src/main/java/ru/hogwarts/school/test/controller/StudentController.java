@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.hogwarts.school.test.model.Avatar;
 import ru.hogwarts.school.test.model.Student;
+import ru.hogwarts.school.test.repository.StudentRepository;
 import ru.hogwarts.school.test.service.StudentService;
 
 import java.io.IOException;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+
 @RequestMapping("/student")
 public class StudentController {
 
@@ -109,4 +111,19 @@ public class StudentController {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Avatar not found");
         }
     }
+    @GetMapping("/count")
+    public Long getCountOfStudents() {
+        return studentService.countStudents();
+    }
+
+    @GetMapping("/average-age")
+    public Double getAverageAge() {
+        return studentService.averageAge();
+    }
+
+    @GetMapping("/last-five")
+    public List<Student> getLastFiveStudents() {
+        return studentService.findLastFiveStudents();
+    }
 }
+

@@ -1,5 +1,6 @@
 package ru.hogwarts.school.test.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -25,6 +26,21 @@ public class StudentService {
 
     private final StudentRepository studentRepository;
     private final AvatarRepository avatarRepository;
+
+    @Autowired
+
+    public Long countStudents() {
+        return studentRepository.countStudents();
+    }
+
+    public Double averageAge() {
+        return studentRepository.averageAge();
+    }
+
+    public List<Student> findLastFiveStudents() {
+        return studentRepository.findLastFiveStudents();
+    }
+
 
     public StudentService(StudentRepository studentRepository, AvatarRepository avatarRepository) {
         this.studentRepository = studentRepository;
@@ -121,4 +137,5 @@ public class StudentService {
             return baos.toByteArray();
         }
     }
+
 }
