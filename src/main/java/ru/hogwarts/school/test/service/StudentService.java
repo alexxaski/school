@@ -1,5 +1,7 @@
 package ru.hogwarts.school.test.service;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,80 +13,77 @@ import ru.hogwarts.school.test.repository.AvatarRepository;
 import ru.hogwarts.school.test.repository.StudentRepository;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.*;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class StudentService {
 
     private final StudentRepository studentRepository;
     private final AvatarRepository avatarRepository;
 
-    @Autowired
-
     public Long countStudents() {
+        log.info("Получаю общее количество студентов.");
         return studentRepository.countStudents();
     }
 
     public Double averageAge() {
+        log.info("Вычисляю средний возраст студентов.");
         return studentRepository.averageAge();
     }
 
     public List<Student> findLastFiveStudents() {
+        log.info("Получаю список пяти последних студентов.");
         return studentRepository.findLastFiveStudents();
     }
 
-
-    public StudentService(StudentRepository studentRepository, AvatarRepository avatarRepository) {
-        this.studentRepository = studentRepository;
-        this.avatarRepository = avatarRepository;
-    }
-
     public Student create(Student student) {
-        if (student == null || student.getId() != null) {
-            throw new IllegalArgumentException("студент уже имеет ID или является пустым");
-        }
-        studentRepository.save(student);
-        return student;
-    }
-    public Student save(Student student) {
-        Student savedStudent = studentRepository.save(student);
-        return savedStudent;
+        log.info("Создаю нового студента.");
+        return studentRepository.save(student);
     }
 
     public Optional<Student> read(Long id) {
+        log.info("Получаю информацию о студенте с id={}.", id);
         return studentRepository.findById(id);
     }
 
-    public void update(Student updateStudent) {
-        if (!studentRepository.existsById(updateStudent.getId())) {
-            throw new IllegalArgumentException("Невозможно добавить");
-        }
-        studentRepository.save(updateStudent);
+    public void update(Student updatedStudent) {
+        log.info("Обновляю информацию о студенте с id={}.", updatedStudent.getId());
+        studentRepository.save(updatedStudent);
     }
+
     public void delete(Long id) {
+        log.info("Удаляю студента с id={}.", id);
         studentRepository.deleteById(id);
     }
 
     public List<Student> getAllStudents() {
+        log.info("Получаю список всех студентов.");
         return Collections.unmodifiableList(studentRepository.findAll());
     }
+
     public List<Student> findByAgeBetween(int min, int max) {
+        log.info("Получаю список студентов возрастом от {} до {}.", min, max);
         return studentRepository.findByAgeBetween(min, max);
     }
 
     public Optional<Avatar> findAvatar(Long studentId) {
+        log.info("Получаю аватар студента с id={}.", studentId);
         return avatarRepository.findByStudentId(studentId);
     }
 @Transactional
     public void uploadAvatar(Long studentId, MultipartFile file) throws IOException {
+    log.info("Загружаю аватар студента с id={}.", studentId);
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new IllegalArgumentException("Студент с таким ID не существует"));
 
