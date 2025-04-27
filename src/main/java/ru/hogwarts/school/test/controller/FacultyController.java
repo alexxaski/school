@@ -19,6 +19,11 @@ public class FacultyController {
         this.facultyService = facultyService;
     }
 
+    @GetMapping("/longest-name")
+    public String getFacultyWithLongestName() {
+        return facultyService.findFacultyWithLongestName();
+    }
+
     @PostMapping("/create")
     public Faculty create(@RequestBody Faculty faculty) {
         facultyService.create(faculty);
