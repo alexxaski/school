@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.hogwarts.school.test.model.Avatar;
 import ru.hogwarts.school.test.model.Student;
-import ru.hogwarts.school.test.repository.StudentRepository;
 import ru.hogwarts.school.test.service.StudentService;
 
 import java.io.IOException;
@@ -102,6 +101,17 @@ public class StudentController {
     }
 
 
+
+    @GetMapping("/average-age")
+    public double AverageAge() {
+        return studentService.calculateAverageAge();
+    }
+
+
+    @GetMapping("/names-starting-with-a")
+    public List<String> getStudentNamesStartingWithA() {
+        return studentService.findStudentNamesStartingWithA();
+    }
 
     @PostMapping("/create")
     public Student create(@RequestBody Student student) {

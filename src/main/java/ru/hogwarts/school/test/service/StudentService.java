@@ -23,6 +23,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +32,23 @@ public class StudentService {
 
     private final StudentRepository studentRepository;
     private final AvatarRepository avatarRepository;
+
+    public double calculateAverageAge() {
+        return studentRepository.findAll().parallelStream()
+                .mapToInt(Student::getAge)
+                .average()
+                .orElse(0.0);
+    }
+
+
+    public List<String> findStudentNamesStartingWithA() {
+        return studentRepository.findAll().parallelStream()
+                .map(Student::getName)
+                .filter(name -> name.startsWith("A"))
+                .map(String::toUpperCase)
+                .sorted()
+                .collect(Collectors.toList());
+    }
 
     public Long countStudents() {
         log.info("Получаю общее количество студентов.");

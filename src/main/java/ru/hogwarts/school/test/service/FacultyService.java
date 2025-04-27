@@ -7,6 +7,7 @@ import ru.hogwarts.school.test.model.Faculty;
 import ru.hogwarts.school.test.repository.FacultyRepository;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +17,13 @@ import java.util.Optional;
 public class FacultyService {
 
     private final FacultyRepository facultyRepository;
+
+    public String findFacultyWithLongestName() {
+        return facultyRepository.findAll().parallelStream()
+                .map(Faculty::getName)
+                .max(Comparator.comparingInt(String::length))
+                .orElse("");
+    }
 
     public void create(Faculty faculty) {
         log.info("Создаю новый факультет.");
