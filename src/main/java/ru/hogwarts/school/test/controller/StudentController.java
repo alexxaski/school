@@ -18,6 +18,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @RestController
 
@@ -31,6 +33,74 @@ public class StudentController {
     public StudentController(StudentService studentService) {
         this.studentService = studentService;
     }
+                         // TASK1
+                         @GetMapping("/print-parallel")
+                         public void printParallel() {
+                             List<Student> students = studentService.getAllStudents();
+
+                             // Первая группа (два студента) выводится в основном потоке
+                             for (int i = 0; i < Math.min(2, students.size()); i++) {
+                                 System.out.println(students.get(i).getName());
+                             }
+
+                             ExecutorService executorService = Executors.newFixedThreadPool(2);
+
+                             // Вторая группа (третий и четвертый студент) выводится в параллельном потоке
+                             Runnable secondGroupRunnable = () -> {
+                                 for (int i = 2; i < Math.min(4, students.size()); i++) {
+                                     System.out.println(students.get(i).getName());
+                                 }
+                             };
+                             executorService.submit(secondGroupRunnable);
+
+                             // Третья группа (пятый и шестой студент) выводится в другом параллельном потоке
+                             Runnable thirdGroupRunnable = () -> {
+                                 for (int i = 4; i < Math.min(6, students.size()); i++) {
+                                     System.out.println(students.get(i).getName());
+                                 }
+                             };
+                             executorService.submit(thirdGroupRunnable);
+
+                             executorService.shutdown();
+                         }
+
+                        //TASK2
+// Синхронизированный метод печати
+                        synchronized void printSynchronized(String name) {
+                            System.out.println(name);
+                        }
+
+    @GetMapping("/print-synchronized")
+    public void printSynchronized() {
+        List<Student> students = studentService.getAllStudents();
+
+        // Первая группа (два студента) выводится в основном потоке
+        for (int i = 0; i < Math.min(2, students.size()); i++) {
+            printSynchronized(students.get(i).getName());
+        }
+
+        ExecutorService executorService = Executors.newFixedThreadPool(2);
+
+        // Вторая группа (третий и четвертый студент) выводится в параллельном потоке
+        Runnable secondGroupRunnable = () -> {
+            for (int i = 2; i < Math.min(4, students.size()); i++) {
+                printSynchronized(students.get(i).getName());
+            }
+        };
+        executorService.submit(secondGroupRunnable);
+
+        // Третья группа (пятый и шестой студент) выводится в другом параллельном потоке
+        Runnable thirdGroupRunnable = () -> {
+            for (int i = 4; i < Math.min(6, students.size()); i++) {
+                printSynchronized(students.get(i).getName());
+            }
+        };
+        executorService.submit(thirdGroupRunnable);
+
+        executorService.shutdown();
+    }
+
+
 
     @GetMapping("/average-age")
     public double AverageAge() {
